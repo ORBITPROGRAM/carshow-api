@@ -1,9 +1,6 @@
 package com.gusrylmubarok.cardatabase;
 
-import com.gusrylmubarok.cardatabase.domain.Car;
-import com.gusrylmubarok.cardatabase.domain.CarRepository;
-import com.gusrylmubarok.cardatabase.domain.Owner;
-import com.gusrylmubarok.cardatabase.domain.OwnerRepository;
+import com.gusrylmubarok.cardatabase.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +13,16 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class CardatabaseApplication implements CommandLineRunner {
-	private static final Logger logger =
-			LoggerFactory.getLogger(CardatabaseApplication.class);
+	private static final Logger logger = LoggerFactory.getLogger(CardatabaseApplication.class);
 
 	@Autowired
 	private CarRepository repository;
 
 	@Autowired
 	private OwnerRepository orepository;
+
+	@Autowired
+	private UserRepository urepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CardatabaseApplication.class, args);
@@ -48,5 +47,14 @@ public class CardatabaseApplication implements CommandLineRunner {
 		for (Car car : repository.findAll()) {
 			logger.info(car.getBrand() + " " + car.getModel());
 		}
+
+		// Username: user, password: user
+		urepository.save(new User("user",
+				"$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue",
+				"USER"));
+		// Username: admin, password: admin
+		urepository.save(new User("admin",
+				"$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW",
+				"ADMIN"));
 	}
 }
